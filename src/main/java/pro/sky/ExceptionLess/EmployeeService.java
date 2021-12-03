@@ -16,7 +16,7 @@ public class EmployeeService implements IEmployeeService {
         return "Welcome";
     }
     @Override
-    public void add(Employee employee) throws ArrayFullException {
+    public void add(Employee employee){
         boolean flag = false;
         for (int i = 0; i < this.employees.length; i++) {
             if(this.employees[i] == null){
@@ -35,7 +35,7 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public int findByName(String firstName, String lastName) throws NoFindEmployeeException {
+    public int findByName(String firstName, String lastName) {
         int index = -1;
         for (int i = 0; i < this.employees.length; i++) {
             if(this.employees[i]!=null) {
