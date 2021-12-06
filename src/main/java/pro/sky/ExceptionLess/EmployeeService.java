@@ -3,43 +3,36 @@ package pro.sky.ExceptionLess;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class EmployeeService implements IEmployeeService {
-    private Employee[] employees;
+    private List<Employee> employees;
 
-    public EmployeeService() {
-        this.employees = new Employee[10];
+    public EmployeeService(List<Employee> employees) {
+        this.employees = employees;
     }
+
 
     public String getWelcome(){
         return "Welcome";
     }
     @Override
     public void add(Employee employee){
-        boolean flag = false;
-        for (int i = 0; i < this.employees.length; i++) {
-            if(this.employees[i] == null){
-                this.employees[i] = employee;
-                flag = true;
-                break;
-            }
-        }
-        if(!flag)
-            throw new ArrayFullException();
+        this.employees.add(employee);
     }
 
     @Override
     public void delete(int index) {
-        this.employees[index] = null;
+        this.employees.remove(index);
     }
 
     @Override
-    public int findByName(String firstName, String lastName) {
+    public int findByName(Employee employee) {
         int index = -1;
-        for (int i = 0; i < this.employees.length; i++) {
-            if(this.employees[i]!=null) {
-                if (this.employees[i].getFirstName().equals(firstName) && this.employees[i].getLastName().equals(lastName)) {
+        for (int i = 0; i < this.employees.size(); i++) {
+            if(this.employees.get(i)!=null) {
+                if (this.employees.get(i).equals(employee)) {
                     index = i;
                     break;
                 }
@@ -52,10 +45,12 @@ public class EmployeeService implements IEmployeeService {
         }
     }
 
-    public String getLstEmployee(){
-        return Arrays.toString(this.employees);
+    public List<Employee> getListEmployee(){
+        return this.employees;
     }
     public Employee getEmployee(int index){
-        return this.employees[index];
+        return this.employees.get(index);
     }
+
+
 }

@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class EmployeeController {
     private final EmployeeService employeeService;
@@ -20,34 +22,21 @@ public class EmployeeController {
         return employeeService.getWelcome();
     }
 
-    @GetMapping(path = "/add")
+    @GetMapping(path = "Post/add")
     public String add(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName){
-        Employee employee = new Employee(firstName,lastName);
-        //try {
-            employeeService.add(employee);
-            return "<div> Сотрудник: "+firstName+" "+lastName+" успешно добавлен!</div>"+"<div>"+employeeService.getLstEmployee()+"</div>";
-        //}catch (ArrayFullException exception){
-        //    return "500 Internal Server ";
-        //}
+        employeeService.add(new Employee(firstName,lastName));
+        return "<div> Сотрудник: "+firstName+" "+lastName+" успешно добавлен!</div>"+"<div>"+employeeService.getListEmployee()+"</div>";
     }
 
-    @GetMapping(path = "/find")
-    public String find(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
-       // try {
-            return employeeService.getEmployee(employeeService.findByName(firstName, lastName)).toString();
-       // }catch (NoFindEmployeeException exception){
-           // return "404 Not Found";
-        //}
+    @GetMapping(path = "Get/find")
+    public Employee find(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
+       return employeeService.getEmployee(employeeService.findByName(new Employee(firstName,lastName)));
     }
 
-    @GetMapping(path = "/delete")
+    @GetMapping(path = "Delete/remove")
     public String delete(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
-        //try {
-            employeeService.delete(employeeService.findByName(firstName, lastName));
-            return  "<div>Сотрудник: " + firstName + " " + lastName + ", удален!</div>"+"<div>"+employeeService.getLstEmployee()+"</div>";
-       // }catch (NoFindEmployeeException exception){
-            //return "404 Not Found";
-        //}
+       employeeService.delete(employeeService.findByName(new Employee(firstName,lastName)));
+       return  "<div>Сотрудник: " + firstName + " " + lastName + ", удален!</div>"+"<div>"+employeeService.getListEmployee()+"</div>";
     }
 
 }
