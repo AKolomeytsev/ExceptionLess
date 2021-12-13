@@ -1,4 +1,4 @@
-package pro.sky.ExceptionLess;
+package pro.sky.ExceptionLess.Data;
 
 import java.util.Objects;
 
