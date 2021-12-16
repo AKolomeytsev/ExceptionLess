@@ -1,14 +1,12 @@
 package pro.sky.ExceptionLess.Services;
 
+import com.google.inject.Inject;
 import org.springframework.stereotype.Service;
 import pro.sky.ExceptionLess.Data.Employee;
 import pro.sky.ExceptionLess.Exceptions.NoFindEmployeeException;
 import pro.sky.ExceptionLess.Interfaces.IEmployeeService;
-import pro.sky.ExceptionLess.Interfaces.Inject;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class EmployeeService implements IEmployeeService {
@@ -53,25 +51,25 @@ public class EmployeeService implements IEmployeeService {
         return employees;
     }
     @Override
-    public Employee getMaxSalary(int otdelId) {
-        return employees.values().stream().filter(employee -> employee.getOldel() == otdelId)
-                .max(Comparator.comparing(employee -> employee.getSalary())).get();
+    public List<Employee> getMaxSalary(int departmentId) {
+        return employees.values().stream().filter(employee -> employee.getOtdel() == departmentId)
+                .max(Comparator.comparing(Employee::getSalary)).stream().toList();
 
     }
     @Override
-    public Employee getMinSalary(int otdelId) {
-        return employees.values().stream().filter(employee -> employee.getOldel() == otdelId)
-                .min(Comparator.comparing(employee -> employee.getSalary())).get();
+    public List<Employee> getMinSalary(int departmentId) {
+        return employees.values().stream().filter(employee -> employee.getOtdel() == departmentId)
+                .min(Comparator.comparing(Employee::getSalary)).stream().toList();
     }
     @Override
-    public Stream<Employee> getEmployeesOtdel(int otdelId) {
-        return employees.values().stream().filter(employee -> employee.getOldel() == otdelId);
+    public List<Employee> getEmployeesOtdel(int departmentId) {
+        return employees.values().stream().filter(employee -> employee.getOtdel() == departmentId).toList();
 
     }
 
     @Inject
-    public Stream<Employee> getEmployeesOtdel() {
+    public List<Employee> getEmployeesOtdel() {
 
-        return (Stream<Employee>) this.employees.values().stream().sorted(Comparator.comparing(Employee::getOldel));
+        return this.employees.values().stream().sorted(Comparator.comparing(employee -> employee.getOtdel())).toList();
     }
 }

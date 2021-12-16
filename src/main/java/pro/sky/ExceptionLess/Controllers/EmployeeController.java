@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pro.sky.ExceptionLess.Data.Employee;
 import pro.sky.ExceptionLess.Services.EmployeeService;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -39,18 +40,23 @@ public class EmployeeController {
     }
 
     @GetMapping(path = "departments/max-salary")
-    public Employee getEmploeesMaxSalary(int otdelId){
-        return employeeService.getMaxSalary(otdelId);
+    public List<Employee> getEmploeesMaxSalary(int departmentId){
+        return employeeService.getMaxSalary(departmentId);
     }
 
     @GetMapping(path = "departments/min-salary")
-    public Employee getEmploeeysMinSalary(int otdelId){
-        return employeeService.getMinSalary(otdelId);
+    public List<Employee> getEmploeeysMinSalary(int departmentId){
+        return employeeService.getMinSalary(departmentId);
     }
 
     @GetMapping(path = "departments/all")
-    public Stream<Employee> getEmploeeysOtdel(int otdelId){
-        return employeeService.getEmployeesOtdel(otdelId);
+    public List<Employee> getEmploeeysOtdel(int departmentId){
+        return employeeService.getEmployeesOtdel(departmentId);
+    }
+
+    @GetMapping(path = "departments/all/")
+    public List<Employee> getEmploeeysOtdel(){
+        return employeeService.getEmployeesOtdel();
     }
 
 

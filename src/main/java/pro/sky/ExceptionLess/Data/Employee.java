@@ -23,10 +23,6 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    //public String getFirstLastName(){
-    //    return firstName + " " + lastName;
-    //}
-
     public String getFirstName() {
         return firstName;
     }
@@ -39,7 +35,7 @@ public class Employee {
         return this.firstName.equals(obj.getFirstName()) && this.lastName.equals(obj.getLastName());
     }
 
-    public int getOldel() {
+    public int getOtdel() {
         return this.oldel;
     }
 
@@ -60,7 +56,7 @@ public class Employee {
     }
 
     public String toString(){
-        return this.getFirstName() + " " + this.getLastName() + " " + this.getOldel() + " " + this.getSalary();
+        return this.getFirstName() + " " + this.getLastName() + " " + this.getOtdel() + " " + this.getSalary();
     }
 
 
