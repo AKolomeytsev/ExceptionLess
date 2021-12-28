@@ -1,5 +1,9 @@
 package pro.sky.ExceptionLess.Data;
 
+import org.apache.commons.lang3.StringUtils;
+import pro.sky.ExceptionLess.Exceptions.NoFindEmployeeException;
+import pro.sky.ExceptionLess.Exceptions.NotIsAlphaString;
+
 import java.util.Objects;
 
 public class Employee {
@@ -9,8 +13,10 @@ public class Employee {
     private double  salary;
 
     public Employee(String firstName, String lastName, int otdel, double salary) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+        //this.firstName = firstName;
+        //this.lastName = lastName;
+        this.setFirstName(firstName);
+        this.setLastName(lastName);
         this.oldel = otdel;
         this.salary = salary;
     }
@@ -20,7 +26,11 @@ public class Employee {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        if(StringUtils.isEmpty(lastName) || !StringUtils.isAlpha(lastName)) {
+            throw new NotIsAlphaString();
+        }else{
+            this.lastName = StringUtils.capitalize(lastName);
+        }
     }
 
     public String getFirstName() {
@@ -28,7 +38,11 @@ public class Employee {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        if (StringUtils.isEmpty(firstName) || !StringUtils.isAlpha(firstName)) {
+            throw new NotIsAlphaString();
+        } else {
+            this.firstName = StringUtils.capitalize(firstName);
+        }
     }
 
     public boolean equals(Employee obj){

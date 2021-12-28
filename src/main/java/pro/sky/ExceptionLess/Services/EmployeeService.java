@@ -69,7 +69,6 @@ public class EmployeeService implements IEmployeeService {
 
     @Inject
     public List<Employee> getEmployeesOtdel() {
-
         return this.employees.values().stream().sorted(Comparator.comparing(employee -> employee.getOtdel())).toList();
     }
 }
