@@ -1,11 +1,11 @@
 package pro.sky.ExceptionLess.Data;
 
 import org.apache.commons.lang3.StringUtils;
-import pro.sky.ExceptionLess.Exceptions.NoFindEmployeeException;
+import org.springframework.stereotype.Repository;
 import pro.sky.ExceptionLess.Exceptions.NotIsAlphaString;
 
 import java.util.Objects;
-
+@Repository
 public class Employee {
     private String firstName;
     private String lastName;
@@ -13,13 +13,12 @@ public class Employee {
     private double  salary;
 
     public Employee(String firstName, String lastName, int otdel, double salary) {
-        //this.firstName = firstName;
-        //this.lastName = lastName;
         this.setFirstName(firstName);
         this.setLastName(lastName);
         this.oldel = otdel;
         this.salary = salary;
     }
+    public Employee(){}
 
     public String getLastName() {
         return lastName;
@@ -46,7 +45,7 @@ public class Employee {
     }
 
     public boolean equals(Employee obj){
-        return this.firstName.equals(obj.getFirstName()) && this.lastName.equals(obj.getLastName());
+        return this.firstName.equals(obj.getFirstName()) && this.lastName.equals(obj.getLastName()) && this.oldel == obj.getOtdel() & this.salary == obj.getSalary();
     }
 
     public int getOtdel() {

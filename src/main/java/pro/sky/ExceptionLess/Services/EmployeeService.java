@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import org.springframework.stereotype.Service;
 import pro.sky.ExceptionLess.Data.Employee;
 import pro.sky.ExceptionLess.Exceptions.NoFindEmployeeException;
+import pro.sky.ExceptionLess.Exceptions.TheEntryIsDuplicatedExeption;
 import pro.sky.ExceptionLess.Interfaces.IEmployeeService;
 
 import java.util.*;
@@ -26,12 +27,45 @@ public class EmployeeService implements IEmployeeService {
     @Override
     public void add(String firstName,String lastName,int otdel,double salary){
         Employee employee = new Employee(firstName,lastName,otdel,salary);
-        this.employees.put(genId(),employee);
+        if(!isEmployee(employee)){
+            employees.put(genId(),employee);
+
+        }else{
+            throw new TheEntryIsDuplicatedExeption();
+        }
+    }
+
+    private boolean isEmployee(Employee employee){
+        boolean isFind = false;
+        int i = 0;
+        while (i<employees.size() && !isFind) {
+            isFind = employees.get(i).equals(employee);
+            i++;
+        }
+        return isFind;
+
+    }
+
+
+    @Inject
+    public String add(Employee employee){
+        if(!employees.containsValue(employee)){
+            employees.put(genId(),employee);
+        }else{
+            throw new TheEntryIsDuplicatedExeption();
+        }
+        return "Ok";
     }
 
     @Override
     public Map<Integer, Employee> delete(int index) {
-        this.employees.remove(index);
+        Employee result = employees.get(index);
+        if(result == null){
+            throw new NoFindEmployeeException();
+        }else{
+            employees.remove(index);
+        }
+
         return getListEmployee();
 
     }
@@ -39,7 +73,7 @@ public class EmployeeService implements IEmployeeService {
     @Override
     public Employee findById(int id) {
         Employee result = employees.get(id);
-        if(employees.isEmpty()){
+        if(employees.isEmpty() || result == null){
             throw new NoFindEmployeeException();
         }else{
             return result;
