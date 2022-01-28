@@ -3,6 +3,7 @@ package pro.sky.ExceptionLess.Services;
 import com.google.inject.Inject;
 import org.springframework.stereotype.Service;
 import pro.sky.ExceptionLess.Data.Employee;
+import pro.sky.ExceptionLess.Exceptions.IsNotNullEmploeeObjectException;
 import pro.sky.ExceptionLess.Exceptions.NoFindEmployeeException;
 import pro.sky.ExceptionLess.Exceptions.TheEntryIsDuplicatedExeption;
 import pro.sky.ExceptionLess.Interfaces.IEmployeeService;
@@ -49,11 +50,16 @@ public class EmployeeService implements IEmployeeService {
 
     @Inject
     public String add(Employee employee){
-        if(!employees.containsValue(employee)){
-            employees.put(genId(),employee);
-        }else{
-            throw new TheEntryIsDuplicatedExeption();
+        if(employee!=null){
+            if(!isEmployee(employee)){
+                employees.put(genId(),employee);
+            }else{
+                throw new TheEntryIsDuplicatedExeption();
+            }
+        }else {
+            throw new IsNotNullEmploeeObjectException();
         }
+
         return "Ok";
     }
 
