@@ -1,33 +1,25 @@
 package pro.sky.ExceptionLess;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import pro.sky.ExceptionLess.Data.Employee;
 import pro.sky.ExceptionLess.Exceptions.NoFindEmployeeException;
-import pro.sky.ExceptionLess.Exceptions.NotIsAlphaString;
 import pro.sky.ExceptionLess.Exceptions.TheEntryIsDuplicatedExeption;
 import pro.sky.ExceptionLess.Services.EmployeeService;
-
-
 import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 
+
 public class EmployeeServiceTest {
 
-    private EmployeeService employeeService = new EmployeeService();
+    static final EmployeeService employeeService = new EmployeeService();
     private Employee[] employees = new Employee[3];
 
-    @BeforeEach
-    public void setting(){
-        employees[0] = new Employee("Коломейцев", "Артем", 1, 1432361);
-        employees[1] = new Employee("Иванов", "Иван", 1, 1432361);
-        employees[2] = new Employee("Петров", "Федор", 1, 1432361);
-    }
 
-    public static Stream<Employee> providerParamsForTestAddEmployee(){
+
+    public static Stream<Employee> providerParamsForTestAddEmployeeDuplicatedExeption(){
         return Stream.of(
                 new Employee("Коломейцев", "Артем", 1, 1432361)
                 , new Employee("Иванов", "Иван", 1, 1432361)
@@ -36,37 +28,47 @@ public class EmployeeServiceTest {
         );
     }
 
-    public static Stream<Employee> providerParamsForTestAddEmployeeIsAlphaString(){
+    public static Stream<Employee> providerParamsForTestAddEmployeeEquals(){
         return Stream.of(
-                new Employee("Коломейцева", "Анна", 1, 1432361)
-                ,new Employee("Иванова", "Наталья", 1, 1432361)
-                ,new Employee("5етров", "иван", 1, 10)
+                new Employee("Адзинов", "Алексей", 2, 564)
+                , new Employee("Иванов", "Иван", 2, 123)
+                , new Employee("Федоров", "Иван", 1, 1432361)
+        );
+    }
+
+    public static Stream<Integer> providerParamsForTestFindEmployee(){
+        return Stream.of(
+                0,1,2,3,4,5,6,7
+        );
+    }
+
+    public static Stream<Integer> providerParamsForTestDeleteEmployee(){
+        return Stream.of(
+                0,1,2,3,4,5,6,7
         );
     }
 
     @ParameterizedTest
-    @MethodSource("providerParamsForTestAddEmployee")
-    public void TestAddEmployee(Employee employee){
-        assertDoesNotThrow(TheEntryIsDuplicatedExeption::new,employeeService.add(employee)) ;
+    @MethodSource("providerParamsForTestAddEmployeeDuplicatedExeption")
+    public void TestAddEmployeeDuplicatedExeption(Employee employee){
+        assertDoesNotThrow(TheEntryIsDuplicatedExeption::new, String.valueOf(employeeService.add(employee))) ;
     }
 
     @ParameterizedTest
-    @MethodSource("providerParamsForTestAddEmployeeIsAlphaString")
-    public void TestAddEmployeeIsAlphaString(Employee employee){
-        assertDoesNotThrow(NotIsAlphaString::new, employeeService.add(employee)) ;
-
+    @MethodSource("providerParamsForTestAddEmployeeEquals")
+    public void TestAddEmployeeEquals(Employee employee){
+        Assertions.assertEquals(employee,employeeService.add(employee));
     }
 
-    @Test
-    public void TestFind(){
-        for (int i = 0;i<employees.length;i++) {
-            assertDoesNotThrow(NoFindEmployeeException::new, String.valueOf((Employee) employeeService.findById(i))) ;
-        }
+    @ParameterizedTest
+    @MethodSource("providerParamsForTestFindEmployee")
+    public void TestEmployeeFind(int i){
+        assertDoesNotThrow(NoFindEmployeeException::new, String.valueOf((Employee) employeeService.findById(i))) ;
     }
-    @Test
-    public void TestDelete(){
-        for (int i = 0;i<employees.length;i++) {
-            assertDoesNotThrow(NoFindEmployeeException::new, String.valueOf((Employee) employeeService.delete(i))) ;
-        }
+
+    @ParameterizedTest
+    @MethodSource("providerParamsForTestDeleteEmployee")
+    public void TestEmployeeDelete(int i){
+        assertDoesNotThrow(NoFindEmployeeException::new, String.valueOf((Employee) employeeService.findById(i))) ;
     }
 }

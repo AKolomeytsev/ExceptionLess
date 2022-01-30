@@ -10,7 +10,7 @@ public class ConfigAppEmployee {
 
     public class ConfigAppBasket {
         @Bean
-        @SessionScope
+        //@SessionScope
         public Employee createEmployee(){
             return  new Employee();
         }

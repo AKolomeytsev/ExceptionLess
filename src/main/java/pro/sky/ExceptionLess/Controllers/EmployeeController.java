@@ -3,18 +3,20 @@ package pro.sky.ExceptionLess.Controllers;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pro.sky.ExceptionLess.Data.Employee;
+import pro.sky.ExceptionLess.Services.DepatmenService;
 import pro.sky.ExceptionLess.Services.EmployeeService;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 @RestController
 public class EmployeeController {
     private final EmployeeService employeeService;
+    private final DepatmenService depatmenService;
 
-    public EmployeeController(EmployeeService employeeService) {
+    public EmployeeController(EmployeeService employeeService, DepatmenService depatmenService) {
         this.employeeService = employeeService;
+        this.depatmenService = depatmenService;
     }
 
     @GetMapping
@@ -35,28 +37,28 @@ public class EmployeeController {
     }
 
     @GetMapping(path = "remove")
-    public Map<Integer, Employee> delete(int id) {
+    public List<Employee> delete(int id) {
        return  employeeService.delete(id);
     }
 
     @GetMapping(path = "departments/max-salary")
     public List<Employee> getEmploeesMaxSalary(int departmentId){
-        return employeeService.getMaxSalary(departmentId);
+        return depatmenService.getMaxSalary(departmentId);
     }
 
     @GetMapping(path = "departments/min-salary")
     public List<Employee> getEmploeeysMinSalary(int departmentId){
-        return employeeService.getMinSalary(departmentId);
+        return depatmenService.getMinSalary(departmentId);
     }
 
     @GetMapping(path = "departments/all")
     public List<Employee> getEmploeeysOtdel(int departmentId){
-        return employeeService.getEmployeesOtdel(departmentId);
+        return depatmenService.getEmployeesOtdel(departmentId);
     }
 
     @GetMapping(path = "departments/all/")
     public List<Employee> getEmploeeysOtdel(){
-        return employeeService.getEmployeesOtdel();
+        return depatmenService.getEmployeesOtdel();
     }
 
 

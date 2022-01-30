@@ -13,7 +13,7 @@ import java.util.*;
 @Service
 public class EmployeeService implements IEmployeeService {
     private final Map<Integer,Employee> employees;
-    private int id;
+    static int id;
     public EmployeeService() {
         this.employees = new HashMap<>();
     }
@@ -49,7 +49,7 @@ public class EmployeeService implements IEmployeeService {
 
 
     @Inject
-    public String add(Employee employee){
+    public Employee add(Employee employee){
         if(employee!=null){
             if(!isEmployee(employee)){
                 employees.put(genId(),employee);
@@ -60,11 +60,11 @@ public class EmployeeService implements IEmployeeService {
             throw new IsNotNullEmploeeObjectException();
         }
 
-        return "Ok";
+        return employee;
     }
 
     @Override
-    public Map<Integer, Employee> delete(int index) {
+    public List<Employee> delete(int index) {
         Employee result = employees.get(index);
         if(result == null){
             throw new NoFindEmployeeException();
@@ -86,29 +86,9 @@ public class EmployeeService implements IEmployeeService {
         }
     }
 
-
-    public Map<Integer,Employee> getListEmployee() {
-        return employees;
-    }
-    @Override
-    public List<Employee> getMaxSalary(int departmentId) {
-        return employees.values().stream().filter(employee -> employee.getOtdel() == departmentId)
-                .max(Comparator.comparing(Employee::getSalary)).stream().toList();
-
-    }
-    @Override
-    public List<Employee> getMinSalary(int departmentId) {
-        return employees.values().stream().filter(employee -> employee.getOtdel() == departmentId)
-                .min(Comparator.comparing(Employee::getSalary)).stream().toList();
-    }
-    @Override
-    public List<Employee> getEmployeesOtdel(int departmentId) {
-        return employees.values().stream().filter(employee -> employee.getOtdel() == departmentId).toList();
-
+    public List<Employee> getListEmployee() {
+        return employees.values().stream().toList();
     }
 
-    @Inject
-    public List<Employee> getEmployeesOtdel() {
-        return this.employees.values().stream().sorted(Comparator.comparing(employee -> employee.getOtdel())).toList();
-    }
+
 }
